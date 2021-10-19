@@ -1,2 +1,3 @@
-# .circleci
-Template repository for starting a project with CircleCI config (i.e., boilerplate)
+# Git Tags, Explored
+
+This is a sample repo that explores how Git tags can be accessed from CircleCI builds.
