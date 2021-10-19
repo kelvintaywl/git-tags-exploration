@@ -1,17 +1,34 @@
 version: 2.1
 
 jobs:
-  echo:
+  find_git_tags:
     docker:
       - image: cimg/base:stable
     steps:
+      - checkout
       - run:
-          name: Greet
-          command: echo "I love ${COLOR} builds."
-          environment:
-            COLOR: "green"
-
+          name: Get latest tag in this branch
+          command: |
+            # if branch is currently "feature1",
+            # this would be `feat1`
+            # else if branch is `development`,
+            # this should be `v0.1.0`
+            # else if branch is `main`,
+            # this would be `v0.0.1`
+            git describe --tags
+      - run:
+          name: Get all tags on repo
+          command: |
+            # should show all 3 tags:
+            #  - feat1 (on feature1 branch)
+            #  - v0.1.0 (on development branch)
+            #  - v0.0.1 (on main branch)
+            git tag -l
+      - run:
+          name: Show git history, including tags
+          command: |
+            git log --graph --oneline --all
 workflows:
   main:
     jobs:
-      - echo
+      - find_git_tags
